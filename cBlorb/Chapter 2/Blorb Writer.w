@@ -403,8 +403,29 @@ Inform 7 never does this.
 	char *type = "ZCOD";
 	if (*p == '.') {
 		if (p[strlen(p)-1] == 'x') type = "GLUL";
+		/* Beginning of code to attempt to add debug information automatically. */
+		{
+			char debug_information_filename[MAX_FILENAME_LENGTH];
+			sprintf(debug_information_filename, "%s%cBuild%cgameinfo.dbg", project_folder, SEP_CHAR, SEP_CHAR);
+			if (!file_exists(debug_information_filename)) {
+				sprintf(debug_information_filename, "%s%cgameinfo.dbg", project_folder, SEP_CHAR);
+			}
+			if (file_exists(debug_information_filename)) {
+				data_chunk(9999, debug_information_filename, "TEXT");
+			}
+			sprintf(debug_information_filename, "%s%cBuild%cauto.inf", project_folder, SEP_CHAR, SEP_CHAR);
+			if (file_exists(debug_information_filename)) {
+				data_chunk(9998, debug_information_filename, "TEXT");
+			}
+			sprintf(debug_information_filename, "%s%cBuild%cDebug log.txt", project_folder, SEP_CHAR, SEP_CHAR);
+			if (file_exists(debug_information_filename)) {
+				data_chunk(9997, debug_information_filename, "TEXT");
+			}
+		}
+		/* End of code to attempt to add debug information automatically. */
 	}
 	add_chunk_to_blorb(type, 0, fn, "Exec", NULL, 0);
+
 }
 
 @ |"IFmd"|: the bibliographic data (or ``metadata'') about the work of IF
